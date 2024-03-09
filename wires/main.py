@@ -1,9 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.datasets import face
 from skimage.measure import label
 from skimage.morphology import binary_closing,binary_erosion,binary_opening,binary_dilation
 
-
+file='wires1.npy.txt'
 mask=np.array([[0,1,0],
                 [0,1,0],
                 [0,1,0]])
@@ -12,12 +13,7 @@ for i in range(1,7):
     image=np.load(f'wires{i}.npy.txt')
     print(f"file=wires{i}.npy.txt")
 
-
-
-    
-
     lab_im=label(image)
-
 
     for cur_key in range(1,lab_im.max()+1):
         new_im=binary_erosion(lab_im==cur_key,mask)
