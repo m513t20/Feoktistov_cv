@@ -64,13 +64,13 @@ data=[]
 for i in range(21):
     args=saved_pencils.readline().split(',')
     args=list(map(float,args[:-1]))
-    print(args)
+
 
     data.append(np.array(args))
 
 
 
-
+ovrall=0
 
 for i in range(1,13):
     image=plt.imread(directory/f'img ({i}).jpg')
@@ -102,20 +102,25 @@ for i in range(1,13):
 
     labeled=label(image)
 
-    print(f'figures={labeled.max()}')
+
 
     regions=regionprops(labeled)
 
     for region in regions:
         ex=extr(region)
         for cur_dat in data:
-            if distance(cur_dat,ex)==0:
+
+            
+            if distance(cur_dat,ex)<0.008:
                 pencils+=1
+                break
 
-
+    ovrall+=pencils
+            
     print(f'Pencils={pencils}')
 
 
 saved_pencils.close()
+print(f'overall={ovrall}')
 
 
