@@ -1,10 +1,8 @@
 import matplotlib.pyplot as plt
 from pathlib import Path
 import numpy as np
-import cv2
-import os
 from skimage.measure import label,regionprops
-
+from skimage.color import rgb2hsv
 from collections import defaultdict
 
 
@@ -77,12 +75,30 @@ for cur_key in shapes:
     print(f'figures shaped like {cur_key} = {shapes[cur_key]}')
 
 
-colored_image=np.mean(image,2)
-colors=get_colors(colored_image)
-for index,value in enumerate(colors):
-    if index==0:
-        continue
-    print(f'color № {index} = {value}')
 
 
+hsv_image=rgb2hsv(image)
 
+
+unique_colors=np.unique(hsv_image[:,:,0])
+
+prev=0
+ars=[[],[],[],[],[],[],[],[],[],[]]
+for index,i in enumerate(np.linspace(0,1,10)):
+    for cur in unique_colors:
+        if cur>prev and cur<i:
+            ars[index].append(cur)
+    prev=i
+
+# print(ars)
+
+
+# plt.plot(unique_colors,"o")
+
+# plt.show()
+num=1
+for cur_step in ars:
+    if len (cur_step)>0:
+        print(f'color {num} = {len(cur_step)}')
+        num+=1
+print('and 1 object colored black')
