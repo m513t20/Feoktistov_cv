@@ -60,3 +60,4 @@ while video.isOpened():
 
 print(frames)
 cv2.destroyAllWindows()
+video.release()
