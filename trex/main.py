@@ -7,7 +7,7 @@ import keyboard
 import os
 from pathlib import Path
 from skimage.measure import label
-
+from trex.work_with_pictures import get_images
 
 
 dir=Path(__file__).parent
@@ -83,27 +83,18 @@ cv2.namedWindow("ground",cv2.WINDOW_GUI_NORMAL)
 
 while True:
     #39
-    pyautogui.screenshot(dir/"sky.png",(x,y-interval,line,40))
-    sky=cv2.imread(os.path.join(dir,"sky.png"))
-    sky_g=cv2.cvtColor(sky,cv2.COLOR_BGR2GRAY)
-    sky_g=cv2.bitwise_not(sky_g)
+    pyautogui.screenshot(dir/"sky.png",(x,y-interval,line,30))
     pyautogui.screenshot(dir/"head.png",(x,y,line,20))
-    head=cv2.imread(os.path.join(dir,"head.png"))
-    head_g=cv2.cvtColor(head,cv2.COLOR_BGR2GRAY)
-    pyautogui.screenshot(dir/'ground.png',(x,y+interval,line+20,40))
-    ground=cv2.imread(os.path.join(dir,"ground.png"))
-    ground_g=cv2.cvtColor(ground,cv2.COLOR_BGR2GRAY)
+    pyautogui.screenshot(dir/'ground.png',(x,y+interval,line,20))
 
 
-    labeled=label(sky_g)
-    plt.imshow(sky_g)
-    plt.show()
 
-    cv2.imshow('sky',sky_g)
-    cv2.imshow('head',head_g)
-    cv2.imshow('ground',ground_g)
-    
+
+
+
 
     key=cv2.waitKey(1)
     if key==ord('q'):
         break
+
+cv2.destroyAllWindows()
