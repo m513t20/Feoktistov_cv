@@ -70,13 +70,15 @@ def full_jump():
 open_game()
 time.sleep(7)
 start_game()
-
+#координаты скринов
 line=500
 interval=30
 x=int(x)
 y=int(y)
 
 #интерва 60
+
+#позиции для окон
 startx=55
 finishx=117
 
@@ -107,6 +109,9 @@ is_grounded=True
 past_max=False
 step=40
 begining_time=time.time()
+
+mod=0
+level=1
 while True:
     #39
     
@@ -146,28 +151,30 @@ while True:
     cact_timer=np.any(head[:,startx_timer:finishx_timer]) 
 
     cur_time=time.time()
-
-    if step<400 and cur_time-begining_time>=step:
-        print('level_up!')
+    #ускорение
+    if step<200 and cur_time-begining_time>=step:
+        print(f'level_up! {level}')
+        level+=1
         step+=40
         finishx+=5
         finishx_timer+=5
-
-
+        mod+=0.009
+    #он пока не собирается останавливаться
+    #начало измерения скорости
     if (cact_timer ) and start_time ==0:
 
         start_time=cur_time
-    
+    #проверка на птицу
     if start_time!=0 and ground_timer:
         is_not_bird+=1
-
+    #скорость в секундах
     if not(cact_timer ) and start_time >0:
 
         jump_time=cur_time-start_time
-        print(jump_time)
+        #print(jump_time)
     
         start_time=0
-  
+    #прыжок или подкат
     if cact_norm and is_grounded:
         if is_not_bird>0:
             keyboard.press('space')
@@ -178,14 +185,14 @@ while True:
             keyboard.press('down')
             duck_start_time=cur_time
 
-
+    #встать
     if duck_start_time!=0 and cur_time-duck_start_time>jump_time:
         keyboard.release("down")
         duck_start_time=0
 
             
-    
-    if  not (is_grounded) and cur_time-jump_start_time>=jump_time:
+    #упасть
+    if  not (is_grounded) and cur_time-jump_start_time>=jump_time-mod:
 
         keyboard.release('space')
 
@@ -194,7 +201,7 @@ while True:
         jump_time=100000
         keyboard.press('down')
         max_jump_time=cur_time
-
+    #перестать падать
     if max_jump_time!=0 and cur_time-max_jump_time>=0.08:
         is_grounded=True
         keyboard.release('down')
